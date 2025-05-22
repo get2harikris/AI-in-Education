@@ -1,29 +1,622 @@
-
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Modern Web Experience</title>
-    <meta name="description" content="A modern web experience built with React and Tailwind CSS" />
-    <meta name="author" content="Lovable" />
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Algorithmic Shift: AI in K-12 Education - Futuristic Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Application Structure Plan: 
+        The SPA maintains its single-page, scrollable narrative structure with thematic sections. The futuristic redesign focuses on visual presentation.
+        1. Hero: High-impact overview with 2025 stats, dark theme, glowing accents.
+        2. AI Classroom Today: Tools, benefits, challenges. Tool cards with minimalist, futuristic styling.
+        3. Educator Evolution: Teacher role shift, new skills. "Sage to Guide" diagram with modern aesthetics.
+        4. Student Empowerment: AI literacy, ethics, UNESCO framework. Clean, readable presentation.
+        5. Road to 2032: Market, tech, futures. Data visualizations adapted to dark theme.
+        6. Echoes of Past: Interactive-feel timeline with futuristic styling.
+        7. Recommendations: Tabbed view with sleek, modern tab design.
+        Navigation remains via a sticky top bar, styled for the dark theme. User flow is unchanged, focusing on enhanced visual engagement.
+    -->
+    <!-- Visualization & Content Choices:
+        - All visualizations (Chart.js charts, HTML/CSS diagrams, timeline) are restyled for a dark, futuristic theme.
+        - Hero Stats: Large stat numbers with glowing effect, Donut chart with electric accents.
+        - AI Tools: Cards with subtle glows or accent borders.
+        - Student Concerns Chart: Horizontal Bar chart, vibrant contrasting colors on dark background.
+        - Sage to Guide Diagram: Clean lines, modern typography.
+        - Student Misuse Chart: Donut chart with high-contrast accents.
+        - UNESCO Framework: Presented in clean, accessible text blocks within futuristic cards.
+        - Market Growth Chart: Line chart with glowing line and points.
+        - Tech Advancements: List within a modern card.
+        - Tech Waves Timeline: Restyled with glowing markers and dark content cards.
+        - Recommendations Tabs: Minimalist, futuristic tab styling.
+        - All charts use Chart.js (Canvas). NO SVG/Mermaid. Unicode icons styled for futuristic feel.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0D0C1D; /* Deep Indigo Background */
+            color: #E0E0E0; /* Light Gray Text */
+        }
+        #navbar {
+            background-color: rgba(20, 18, 42, 0.85); /* Darker Indigo, semi-transparent */
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #302D6B; /* Subtle Purple Border */
+        }
+        .nav-link {
+            @apply px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-cyan-600 hover:text-white transition-colors;
+        }
+        .nav-link.active {
+            @apply bg-cyan-500 text-white;
+        }
+        .section-title {
+            @apply text-3xl font-bold tracking-tight text-cyan-400 sm:text-4xl mb-4 uppercase tracking-wide; /* Corrected letter-spacing */
+        }
+        .section-subtitle {
+            @apply mt-2 text-lg leading-8 text-gray-400 mb-8;
+        }
+        .card {
+            @apply bg-gradient-to-br from-[#1A1833] to-[#121026] shadow-2xl rounded-xl p-6 transition-all duration-300 border border-cyan-500/30 hover:border-cyan-400/70;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1), 0 0 30px rgba(0, 255, 255, 0.05), inset 0 0 10px rgba(0,255,255,0.05);
+        }
+        .stat-number {
+            @apply text-5xl font-bold text-pink-400;
+            text-shadow: 0 0 10px rgba(236, 72, 153, 0.7), 0 0 20px rgba(236, 72, 153, 0.5);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%; 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 300px; 
+            max-height: 350px; 
+        }
+        @media (min-width: 768px) { 
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+        .tab-button {
+            @apply px-4 py-3 font-medium text-sm focus:outline-none transition-colors duration-150 ease-in-out border-b-2 -mb-px; 
+        }
+        .tab-button.active {
+            @apply text-cyan-400 border-cyan-400; 
+        }
+        .tab-button:not(.active) {
+            @apply text-gray-400 border-transparent hover:text-cyan-300 hover:border-gray-700; 
+        }
+        .timeline .timeline-item { @apply mb-10 flex items-start; }
+        .timeline .timeline-marker { 
+            @apply flex-shrink-0 w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center text-white font-semibold shadow-xl shadow-cyan-500/50 text-xl;
+         }
+        .timeline .timeline-content { 
+            @apply ml-8 bg-gradient-to-br from-[#1F1D3D] to-[#16142E] p-6 rounded-lg shadow-lg border border-pink-500/30 flex-grow;
+            box-shadow: 0 0 10px rgba(236, 72, 153, 0.2);
+        }
+        .timeline .timeline-content h3 { @apply text-xl font-semibold text-cyan-400 mb-2; }
+        .timeline .timeline-content p { @apply text-gray-400 text-sm; }
 
-    <meta property="og:title" content="Modern Web Experience" />
-    <meta property="og:description" content="A modern web experience built with React and Tailwind CSS" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+        .chart-source {
+            font-size: 0.75rem; 
+            color: #9CA3AF; /* gray-400 */
+            opacity: 0.8; 
+            text-align: center;
+            margin-top: 0.5rem; 
+        }
+        .chart-source a {
+            color: #22D3EE; /* cyan-400 */
+            text-decoration: none;
+        }
+        .chart-source a:hover {
+            text-decoration: underline;
+            color: #67E8F9; /* cyan-300 */
+        }
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap">
-  </head>
+        /* Chart.js Global Defaults for Dark Theme */
+        Chart.defaults.color = '#A0AEC0'; 
+        Chart.defaults.borderColor = '#4A5568'; 
+        Chart.defaults.plugins.legend.labels.color = '#A0AEC0';
+        Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(26, 24, 51, 0.95)'; 
+        Chart.defaults.plugins.tooltip.titleColor = '#00FFFF'; 
+        Chart.defaults.plugins.tooltip.bodyColor = '#E0E0E0';
+        Chart.defaults.plugins.tooltip.borderColor = '#00FFFF';
+        Chart.defaults.plugins.tooltip.borderWidth = 1;
+        Chart.defaults.plugins.tooltip.padding = 12;
+        Chart.defaults.plugins.tooltip.cornerRadius = 8;
 
-  <body>
-    <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav id="navbar" class="sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span style="display: inline-block;">
+                         <img src="https://vertaware.com/assets/img/logo.svg" alt="logo" style="height: 40px;"/>
+                    </span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#classroom" class="nav-link">AIClassroom</a>
+                        <a href="#educator" class="nav-link">Educators</a>
+                        <a href="#student" class="nav-link">Students</a>
+                        <a href="#future" class="nav-link">Outlook 2032</a>
+                        <a href="#history" class="nav-link">PastWaves</a>
+                        <a href="#recommendations" class="nav-link">Actions</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-cyan-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#hero" class="block nav-link text-base">Snapshot_2025</a>
+                <a href="#classroom" class="block nav-link text-base">AI_Classroom</a>
+                <a href="#educator" class="block nav-link text-base">Educators</a>
+                <a href="#student" class="block nav-link text-base">Students</a>
+                <a href="#future" class="block nav-link text-base">Outlook_2032</a>
+                <a href="#history" class="block nav-link text-base">Past_Waves</a>
+                <a href="#recommendations" class="block nav-link text-base">Actions</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="hero" class="pt-16 -mt-16 mb-20 text-center">
+            <h1 class="text-4xl font-bold tracking-tight sm:text-6xl leading-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">
+                The Algorithmic Shift: AI in K-12
+            </h1>
+            <p class="mt-6 text-xl leading-8 text-gray-300">2025: AI integration accelerates, reshaping K-12 teaching, learning, and future-readiness.</p>
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card items-center justify-center flex flex-col">
+                    <div class="stat-number">80%</div>
+                    <p class="mt-2 font-semibold text-gray-300">students: AI enhances educational experience.</p>
+                    <p class="chart-source">Source: <a href="https://www.gallup.com/analytics/651674/gen-z-research.aspx" target="_blank">Gallup & WFF - Gen Z AI Research</a></p>
+                </div>
+                <div class="card items-center justify-center flex flex-col">
+                    <div class="stat-number">95.6%</div>
+                    <p class="mt-2 font-semibold text-gray-300">students use AI in academic activities.</p>
+                     <p class="chart-source">Source: <a href="https://www.gallup.com/analytics/651674/gen-z-research.aspx" target="_blank">Gallup & WFF - Gen Z AI Research</a></p>
+                </div>
+                <div class="card items-center justify-center flex flex-col">
+                    <div class="chart-container w-full h-48 md:h-56 mx-auto">
+                        <canvas id="studentImpactChart"></canvas>
+                    </div>
+                    <p class="mt-2 font-semibold text-gray-300">82.4% believe AI positively impacts grades.</p>
+                    <p class="chart-source">Source: <a href="https://www.gallup.com/analytics/651674/gen-z-research.aspx" target="_blank">Gallup & WFF - Gen Z AI Research</a></p>
+                </div>
+            </div>
+            <p class="mt-10 text-gray-400">AI drives personalization, engagement, and accessibility for adaptive, effective learning.</p>
+        </section>
+
+        <section id="classroom" class="pt-16 -mt-16 mb-20">
+            <h2 class="section-title text-center">AI Classroom_Interface [2025]</h2>
+            <p class="section-subtitle text-center max-w-3xl mx-auto">Exploring tools, benefits, and challenges as AI becomes a K-12 fixture.</p>
+            
+            <div class="card mb-10">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-6">Core AI Educational Platforms</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-[#1F1D3D]/70 p-5 rounded-lg border border-pink-500/40 hover:border-pink-400/70 transition group">
+                        <h4 class="font-semibold text-cyan-400 group-hover:text-cyan-300 transition">NotebookLM, Gemini, ChatGPT</h4>
+                        <p class="text-sm text-gray-400 group-hover:text-gray-300 transition">Research, summarization, lesson planning.</p>
+                    </div>
+                    <div class="bg-[#1F1D3D]/70 p-5 rounded-lg border border-pink-500/40 hover:border-pink-400/70 transition group">
+                        <h4 class="font-semibold text-cyan-400 group-hover:text-cyan-300 transition">Brisk Teaching, Diffit</h4>
+                        <p class="text-sm text-gray-400 group-hover:text-gray-300 transition">Text leveling, feedback, resource creation.</p>
+                    </div>
+                    <div class="bg-[#1F1D3D]/70 p-5 rounded-lg border border-pink-500/40 hover:border-pink-400/70 transition group">
+                        <h4 class="font-semibold text-cyan-400 group-hover:text-cyan-300 transition">MagicSchool, School AI Spaces</h4>
+                        <p class="text-sm text-gray-400 group-hover:text-gray-300 transition">Teacher efficiency, student AI literacy.</p>
+                    </div>
+                </div>
+                <p class="chart-source mt-4 text-right">Source: <a href="https://tech.ed.gov/ai/" target="_blank">U.S. Dept. of Ed. - AI</a></p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-cyan-400 mb-3">Educator Efficiency Matrix</h3>
+                    <div class="stat-number text-6xl">13 <span class="text-3xl text-gray-400">hrs/wk</span></div>
+                    <p class="mt-2 font-semibold text-gray-300">Potential time reclaimed by AI for admin & planning tasks.</p>
+                    <p class="chart-source">Source: <a href="https://digitalpromise.org/initiative/artificial-intelligence/" target="_blank">Digital Promise - AI Initiative</a></p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-cyan-400 mb-3">Student AI Concern Vectors</h3>
+                    <div class="chart-container w-full h-60 md:h-72 mx-auto">
+                        <canvas id="studentConcernsChart"></canvas>
+                    </div>
+                    <p class="chart-source text-center">Source: <a href="https://www.gallup.com/analytics/651674/gen-z-research.aspx" target="_blank">Gallup & WFF - Gen Z AI Research</a></p>
+                </div>
+            </div>
+            <p class="mt-10 text-center text-gray-400">Integrity, bias, equity, and privacy: critical ongoing challenges in the AI matrix.</p>
+        </section>
+
+        <section id="educator" class="pt-16 -mt-16 mb-20">
+            <h2 class="section-title text-center">Educator_Evolution_Protocol</h2>
+            <p class="section-subtitle text-center max-w-3xl mx-auto">AI reshapes teaching: new skills emerge, shifting from "Sage_OS" to "Guide_OS."</p>
+            <div class="card mb-10">
+                <div class="flex flex-col md:flex-row items-center justify-around text-center md:text-left p-4">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-pink-400 mb-2">Sage_OS <span class="text-xs text-gray-500">[Legacy]</span></h3>
+                        <p class="text-gray-400">Information dispenser, lecture-centric.</p>
+                    </div>
+                    <div class="text-5xl text-cyan-400 my-6 md:my-0 mx-8 transform md:rotate-0 rotate-90 animate-pulse">&rarr;</div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-cyan-400 mb-2">Guide_OS <span class="text-xs text-green-400">[Active]</span></h3>
+                        <p class="text-gray-300">Learning facilitator, critical thinking cultivator.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="text-xl font-semibold text-cyan-400 mb-6">Essential Teacher Competency Upgrades</h3>
+                <ul class="list-none space-y-3 text-gray-300 pl-2">
+                    <li class="flex items-start"><span class="text-pink-400 mr-3 mt-1 text-xl">◆</span><div><strong class="text-cyan-400">AI Literacy OS:</strong> Understanding AI functions, capabilities, limitations, and biases.</div></li>
+                    <li class="flex items-start"><span class="text-pink-400 mr-3 mt-1 text-xl">◆</span><div><strong class="text-cyan-400">Data Interpretation Engine:</strong> Analyzing AI data to inform instruction.</div></li>
+                    <li class="flex items-start"><span class="text-pink-400 mr-3 mt-1 text-xl">◆</span><div><strong class="text-cyan-400">Ethical Guidance Protocol:</strong> Teaching responsible AI use, privacy, and integrity.</div></li>
+                    <li class="flex items-start"><span class="text-pink-400 mr-3 mt-1 text-xl">◆</span><div><strong class="text-cyan-400">AI-Integrated Curriculum Design Suite:</strong> Thoughtfully embedding AI into lessons.</div></li>
+                    <li class="flex items-start"><span class="text-pink-400 mr-3 mt-1 text-xl">◆</span><div><strong class="text-cyan-400">Higher-Order Thinking Facilitation Module:</strong> Fostering critical analysis & creativity.</div></li>
+                </ul>
+                 <p class="chart-source mt-4 text-right">Source: <a href="https://tech.ed.gov/ai-guidance/" target="_blank">U.S. Dept. of Ed. - AI Guidance</a></p>
+            </div>
+        </section>
+
+        <section id="student" class="pt-16 -mt-16 mb-20">
+            <h2 class="section-title text-center">Student_Empowerment_Grid</h2>
+            <p class="section-subtitle text-center max-w-3xl mx-auto">Equipping students with AI literacy, critical thought, ethical frameworks, and future-ready skills.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-cyan-400 mb-4">Academic Integrity Alert_System</h3>
+                    <div class="chart-container w-full h-56 md:h-64 mx-auto">
+                        <canvas id="studentMisuseChart"></canvas>
+                    </div>
+                    <p class="mt-3 text-sm text-gray-300 text-center">~40% students admit unauthorized AI use for assignments.</p>
+                    <p class="chart-source text-center">Source: <a href="https://digitalpromise.org/initiative/artificial-intelligence/" target="_blank">Digital Promise - AI Initiative</a></p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-cyan-400 mb-4">UNESCO AI Competency Matrix</h3>
+                    <p class="text-gray-300 mb-3 text-sm">Core competencies across 4 dimensions:</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="p-3 bg-[#1F1D3D]/80 rounded-md border border-cyan-500/50"><strong class="text-cyan-400">Human-Centred Mindset</strong></li>
+                        <li class="p-3 bg-[#1F1D3D]/80 rounded-md border border-pink-500/50"><strong class="text-pink-400">Ethics of AI</strong></li>
+                        <li class="p-3 bg-[#1F1D3D]/80 rounded-md border border-cyan-500/50"><strong class="text-cyan-400">AI Techniques & Applications</strong></li>
+                        <li class="p-3 bg-[#1F1D3D]/80 rounded-md border border-pink-500/50"><strong class="text-pink-400">AI System Design</strong></li>
+                    </ul>
+                    <p class="chart-source mt-4 text-right">Source: <a href="https://www.unesco.org/en/artificial-intelligence/education" target="_blank">UNESCO AI & Education</a></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="future" class="pt-16 -mt-16 mb-20">
+            <h2 class="section-title text-center">Roadmap_2032: AI Deep_Impact</h2>
+            <p class="section-subtitle text-center max-w-3xl mx-auto">Projecting market growth, tech advancements, and transformations in curriculum & assessment.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-cyan-400 mb-4">AI_Ed_Market_Growth_Vector</h3>
+                    <div class="chart-container w-full h-72 mx-auto">
+                        <canvas id="marketGrowthChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-300 mt-3 text-center">Projected: USD $26B - $88B by 2032.</p>
+                    <p class="chart-source text-center">Source: <a href="https://www.holoniq.com/notes/global-education-outlook-10-charts-that-explain-the-future-of-learning-talent" target="_blank">HolonIQ EdTech Market</a></p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold text-cyan-400 mb-4">Key Tech_Advancements [2032]</h3>
+                     <ul class="list-none space-y-3 text-gray-300 pl-2">
+                        <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">❖</span>Advanced NLP & Conversational AI</li>
+                        <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">❖</span>AI + VR/AR Immersive Learning</li>
+                        <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">❖</span>Hyper-Adaptive Learning Systems</li>
+                        <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">❖</span>Mature Generative AI Content</li>
+                        <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">❖</span>AI-Powered Educational Robotics</li>
+                    </ul>
+                    <p class="chart-source mt-4 text-right">Source: <a href="https://www.imsglobal.org/research/learning-impact-reports" target="_blank">EdTech Future Trends (1EdTech)</a></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="history" class="pt-16 -mt-16 mb-20">
+            <h2 class="section-title text-center">Echoes_From_Past_Tech_Waves</h2>
+            <p class="section-subtitle text-center max-w-3xl mx-auto">Learning from PCs, Internet, & Smartphones to navigate AI integration.</p>
+            <div class="timeline max-w-3xl mx-auto relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-cyan-500 before:to-transparent">
+                <div class="timeline-item relative md:grid md:grid-cols-2 md:gap-6">
+                    <div class="timeline-marker md:col-start-1 md:row-start-1 md:ml-auto">💻</div>
+                    <div class="timeline-content md:col-start-2">
+                        <h3>Personal Computers (1990s)</h3>
+                        <p>Interactivity, multimedia. Challenges: cost, training, digital divide.</p>
+                    </div>
+                </div>
+                <div class="timeline-item relative md:grid md:grid-cols-2 md:gap-6">
+                    <div class="timeline-marker md:col-start-2 md:row-start-1 md:mr-auto">🌐</div>
+                    <div class="timeline-content md:col-start-1 md:row-start-1 md:text-right">
+                        <h3>Internet & Google (Late 1990s-2000s)</h3>
+                        <p>Vast info access, critical evaluation shift. Challenges: overload, accuracy, plagiarism.</p>
+                    </div>
+                </div>
+                <div class="timeline-item relative md:grid md:grid-cols-2 md:gap-6">
+                    <div class="timeline-marker md:col-start-1 md:row-start-1 md:ml-auto">📱</div>
+                    <div class="timeline-content md:col-start-2">
+                        <h3>Smartphones (2010s-Present)</h3>
+                        <p>Mobile learning, connectivity. Challenges: distraction, mental health, cyberbullying.</p>
+                    </div>
+                </div>
+                <div class="timeline-item relative md:grid md:grid-cols-2 md:gap-6">
+                     <div class="timeline-marker md:col-start-2 md:row-start-1 md:mr-auto">💡</div>
+                    <div class="timeline-content md:col-start-1 md:row-start-1 md:text-right">
+                        <h3>Artificial Intelligence (2020s+)</h3>
+                        <p>Hyper-personalization, automation. Divergences: AI agency, pace, complexity.</p>
+                    </div>
+                </div>
+            </div>
+             <p class="chart-source text-center mt-6">Source: <a href="https://edtech.domains.ufl.edu/projects/history-of-educational-technology/" target="_blank">History of EdTech (UF)</a></p>
+        </section>
+
+        <section id="recommendations" class="pt-16 -mt-16 mb-16">
+            <h2 class="section-title text-center">Navigating The Future: Action Protocols</h2>
+            <div class="card">
+                <div class="border-b border-cyan-500/30 mb-6"> 
+                    <nav class="flex space-x-2 sm:space-x-6 justify-center" aria-label="Tabs">
+                        <button data-tab="educators" class="tab-button active">Educators_OS</button>
+                        <button data-tab="students" class="tab-button">Students_OS</button>
+                        <button data-tab="policymakers" class="tab-button">Policy_Matrix</button>
+                    </nav>
+                </div>
+                <div id="tab-content">
+                    <div data-tab-panel="educators" class="space-y-4 text-gray-300">
+                        <ul class="list-none pl-2 space-y-2">
+                           <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Embrace lifelong learning & cultivate deep AI literacy.</li>
+                           <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Redesign learning experiences for higher-order thinking.</li>
+                           <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Explicitly teach AI literacy and ethical AI use.</li>
+                           <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Strategically leverage AI for efficiency and personalization.</li>
+                           <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Foster a human-centered and supportive classroom environment.</li>
+                           <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Engage in professional collaboration and share best practices.</li>
+                        </ul>
+                    </div>
+                    <div data-tab-panel="students" class="hidden space-y-4 text-gray-300">
+                         <ul class="list-none pl-2 space-y-2">
+                            <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Develop strong foundational AI literacy.</li>
+                            <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Utilize AI as a learning partner, not a cognitive shortcut.</li>
+                            <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Practice and uphold ethical AI use.</li>
+                            <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Cultivate and apply critical thinking skills.</li>
+                            <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Focus on developing "human-centric" skills.</li>
+                            <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Seek guidance and engage in dialogue.</li>
+                        </ul>
+                    </div>
+                    <div data-tab-panel="policymakers" class="hidden space-y-4 text-gray-300">
+                        <ul class="list-none pl-2 space-y-2">
+                            <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Develop comprehensive, adaptive AI strategies and flexible policies.</li>
+                            <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Invest strategically in robust and ongoing professional development.</li>
+                            <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Champion and ensure equitable access to AI.</li>
+                            <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Promote and integrate AI literacy across the K-12 curriculum.</li>
+                            <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Foster a culture of research, innovation, and shared learning.</li>
+                            <li class="flex items-start"><span class="text-cyan-400 mr-2 mt-1">▹</span>Prioritize a human-centered approach to AI integration.</li>
+                        </ul>
+                    </div>
+                </div>
+                 <p class="chart-source mt-6 text-right">Source: <a href="https://www.cosn.org/artificial-intelligence/" target="_blank">CoSN AI Guidance</a></p>
+            </div>
+        </section>
+    </div>
+
+    <footer class="bg-[#121026] text-gray-400 text-center p-10 mt-12 border-t border-cyan-500/20">
+        <p>&copy; 2025 Vertaware</p>
+    </footer>
+
+    <script>
+        const chartTooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            return Array.isArray(label) ? label.join(' ') : label;
+        };
+
+        const wrapText = (text, maxWidthChars = 16) => {
+            if (typeof text !== 'string' || text.length <= maxWidthChars) return text;
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + ' ' + words[i]).length > maxWidthChars && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine += ' ' + words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        };
+        
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    enabled: true,
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(26, 24, 51, 0.95)', 
+                    titleColor: '#00FFFF', 
+                    bodyColor: '#E0E0E0', 
+                    borderColor: '#00FFFF', 
+                    borderWidth: 1,
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: { title: chartTooltipTitleCallback }
+                }
+            },
+            scales: { 
+                x: { 
+                    ticks: { color: '#A0AEC0' , font: { size: 10 } }, 
+                },
+                y: { 
+                    ticks: { color: '#A0AEC0' , font: { size: 10 } }, 
+                }
+            }
+        };
+
+        const studentImpactCtx = document.getElementById('studentImpactChart').getContext('2d');
+        new Chart(studentImpactCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Positive Impact on Grades', 'Other'],
+                datasets: [{
+                    data: [82.4, 17.6],
+                    backgroundColor: ['#EC4899', '#4A5568'], 
+                    borderColor: ['#1A1833', '#1A1833'], 
+                    borderWidth: 0, 
+                    hoverOffset: 8,
+                    hoverBorderColor: '#00FFFF'
+                }]
+            },
+            options: { ...commonChartOptions, cutout: '70%' }
+        });
+
+        const studentConcernsCtx = document.getElementById('studentConcernsChart').getContext('2d');
+        new Chart(studentConcernsCtx, {
+            type: 'bar',
+            data: {
+                labels: [wrapText('Information Accuracy'), wrapText('Over-reliance / Less Critical Thinking')],
+                datasets: [{
+                    data: [48.2, 16.5],
+                    backgroundColor: ['#00BCD4', '#FF4081'], 
+                    borderColor: ['#00BCD4', '#FF4081'],
+                    borderWidth: 0,
+                    borderRadius: 6,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.7
+                }]
+            },
+            options: { 
+                ...commonChartOptions, 
+                indexAxis: 'y',
+                scales: { 
+                    x: { ...commonChartOptions.scales.x, beginAtZero: true, max: 55 },
+                    y: { ...commonChartOptions.scales.y, ticks: { ...commonChartOptions.scales.y.ticks, autoSkip: false, padding: 10 } }
+                }
+            }
+        });
+        
+        const studentMisuseCtx = document.getElementById('studentMisuseChart').getContext('2d');
+        new Chart(studentMisuseCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Admitted Misuse', 'Did Not Admit'],
+                datasets: [{
+                    data: [40, 60], 
+                    backgroundColor: ['#FF4081', '#4A5568'], 
+                    borderColor: ['#1A1833', '#1A1833'],
+                    borderWidth: 3, 
+                    hoverOffset: 8,
+                    hoverBorderColor: '#00FFFF'
+                }]
+            },
+            options: { 
+                ...commonChartOptions, 
+                cutout: '70%',
+                plugins: { ...commonChartOptions.plugins, legend: { display: true, position: 'bottom', labels: {color: '#A0AEC0', font: {size: 10}, boxWidth:12, padding:15} } }
+            }
+        });
+
+        const marketGrowthCtx = document.getElementById('marketGrowthChart').getContext('2d');
+        new Chart(marketGrowthCtx, {
+            type: 'line',
+            data: {
+                labels: ['2023 (Est.)', '2032 (Proj. Avg.)'],
+                datasets: [{
+                    label: 'AI in Ed Market (USD Billion)', 
+                    data: [5, (26.43 + 88.2) / 2], 
+                    fill: true,
+                    backgroundColor: 'rgba(0, 255, 255, 0.15)', 
+                    borderColor: '#00FFFF', 
+                    tension: 0.4,
+                    pointBackgroundColor: '#00FFFF',
+                    pointBorderColor: '#E0E0E0',
+                    pointHoverBackgroundColor: '#E0E0E0',
+                    pointHoverBorderColor: '#00FFFF',
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    borderWidth: 2.5
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    x: { ...commonChartOptions.scales.x }, 
+                    y: { 
+                        ...commonChartOptions.scales.y, 
+                        beginAtZero: true, 
+                        ticks: { ...commonChartOptions.scales.y.ticks, callback: function(value) { return '$' + value + 'B';} } 
+                    }
+                },
+                 plugins: { ...commonChartOptions.plugins, legend: { display: false } }
+            }
+        });
+
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabPanels = document.querySelectorAll('[data-tab-panel]');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                const targetTab = button.getAttribute('data-tab');
+                tabPanels.forEach(panel => {
+                    if (panel.getAttribute('data-tab-panel') === targetTab) {
+                        panel.classList.remove('hidden');
+                    } else {
+                        panel.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+            mobileMenuButton.setAttribute('aria-expanded', !expanded);
+            mobileMenu.classList.toggle('hidden');
+            mobileMenuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenuButton.click();
+                }
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 80) { 
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+    </script>
+</body>
 </html>
