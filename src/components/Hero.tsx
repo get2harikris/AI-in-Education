@@ -14,10 +14,10 @@ const Hero = () => {
             Craft stunning, responsive websites with our modern design system. Built for developers and designers who want to create exceptional digital experiences.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{animationDelay: '0.4s'}}>
-            <Button size="lg" className="font-medium">
+            <Button size="lg" className="font-medium bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-300">
               Get Started
             </Button>
-            <Button size="lg" variant="outline" className="font-medium">
+            <Button size="lg" variant="outline" className="font-medium hover:bg-blue-50 transition-all duration-300">
               Learn More <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
