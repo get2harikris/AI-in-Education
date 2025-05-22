@@ -8,31 +8,60 @@ import { cn } from "@/lib/utils";
 
 const Index = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
   const currentYear = new Date().getFullYear();
+  
+  // Handle smooth scrolling to sections
+  const scrollToSection = (sectionId: string) => {
+    setActiveSection(sectionId);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    if (isOpen) {
+      setIsOpen(false);
+    }
+  };
   
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Navbar */}
       <nav className="w-full py-4 bg-white/90 backdrop-blur-sm fixed top-0 z-50 border-b border-gray-100">
         <div className="container px-4 mx-auto flex justify-between items-center">
-          <a href="/" className="flex items-center">
+          <a 
+            href="#" 
+            className="flex items-center"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('hero');
+            }}
+          >
             <h1 className="text-xl font-bold text-gray-900">ModernWeb</h1>
           </a>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
             <div className="flex space-x-6">
-              {['Features', 'Testimonials', 'Pricing', 'Contact'].map((item) => (
+              {[
+                { id: 'features', label: 'Features' },
+                { id: 'testimonials', label: 'Testimonials' },
+                { id: 'pricing', label: 'Pricing' },
+                { id: 'contact', label: 'Contact' }
+              ].map((item) => (
                 <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  className="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={`text-gray-600 hover:text-blue-600 transition-colors font-medium ${activeSection === item.id ? 'text-blue-600' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(item.id);
+                  }}
                 >
-                  {item}
+                  {item.label}
                 </a>
               ))}
             </div>
-            <Button>Get Started</Button>
+            <Button onClick={() => scrollToSection('cta')}>Get Started</Button>
           </div>
 
           {/* Mobile Nav Toggle */}
@@ -49,17 +78,25 @@ const Index = () => {
         {isOpen && (
           <div className="md:hidden absolute top-16 inset-x-0 bg-white border-b border-gray-100 shadow-lg animate-fade-in">
             <div className="container px-4 py-4 mx-auto flex flex-col space-y-4">
-              {['Features', 'Testimonials', 'Pricing', 'Contact'].map((item) => (
+              {[
+                { id: 'features', label: 'Features' },
+                { id: 'testimonials', label: 'Testimonials' },
+                { id: 'pricing', label: 'Pricing' },
+                { id: 'contact', label: 'Contact' }
+              ].map((item) => (
                 <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  className="text-gray-600 hover:text-blue-600 transition-colors font-medium py-2"
-                  onClick={() => setIsOpen(false)}
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={`text-gray-600 hover:text-blue-600 transition-colors font-medium py-2 ${activeSection === item.id ? 'text-blue-600' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(item.id);
+                  }}
                 >
-                  {item}
+                  {item.label}
                 </a>
               ))}
-              <Button className="w-full">Get Started</Button>
+              <Button className="w-full" onClick={() => scrollToSection('cta')}>Get Started</Button>
             </div>
           </div>
         )}
@@ -67,20 +104,29 @@ const Index = () => {
 
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-to-b from-white to-blue-50">
+        <section id="hero" className="pt-32 pb-20 md:pt-40 md:pb-28 bg-gradient-to-b from-white to-blue-50">
           <div className="container px-4 mx-auto">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
-                Create <span className="gradient-text">Beautiful</span> Modern Web Experiences
+                Create <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">Beautiful</span> Modern Web Experiences
               </h1>
               <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto animate-fade-in" style={{animationDelay: '0.2s'}}>
                 Craft stunning, responsive websites with our modern design system. Built for developers and designers who want to create exceptional digital experiences.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{animationDelay: '0.4s'}}>
-                <Button size="lg" className="font-medium bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-300">
+                <Button 
+                  size="lg" 
+                  className="font-medium bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-300"
+                  onClick={() => scrollToSection('cta')}
+                >
                   Get Started
                 </Button>
-                <Button size="lg" variant="outline" className="font-medium hover:bg-blue-50 transition-all duration-300">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="font-medium hover:bg-blue-50 transition-all duration-300"
+                  onClick={() => scrollToSection('features')}
+                >
                   Learn More <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
@@ -111,7 +157,7 @@ const Index = () => {
               ].map((feature, index) => (
                 <div 
                   key={index} 
-                  className="bg-white rounded-xl p-6 border border-gray-100 hover-scale card-shadow animate-fade-in"
+                  className="bg-white rounded-xl p-6 border border-gray-100 hover:scale-105 transition-transform duration-200 shadow-sm hover:shadow-md animate-fade-in"
                   style={{ animationDelay: feature.delay }}
                 >
                   <div className={cn(
@@ -177,8 +223,106 @@ const Index = () => {
           </section>
         </div>
 
+        {/* Pricing Section (New) */}
+        <section id="pricing" className="py-20 bg-white">
+          <div className="container px-4 mx-auto">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Simple, Transparent Pricing</h2>
+              <p className="text-lg text-gray-600">
+                Choose the plan that's right for your project
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {[
+                {
+                  name: "Starter",
+                  price: "$0",
+                  description: "Perfect for small projects and individual developers",
+                  features: [
+                    "1 Project",
+                    "Basic Components",
+                    "Community Support",
+                    "Basic Documentation"
+                  ],
+                  highlighted: false,
+                  delay: "0s"
+                },
+                {
+                  name: "Professional",
+                  price: "$49",
+                  period: "/month",
+                  description: "Everything you need for professional web development",
+                  features: [
+                    "Unlimited Projects",
+                    "All Components",
+                    "Premium Support",
+                    "Advanced Documentation",
+                    "Custom Theming"
+                  ],
+                  highlighted: true,
+                  delay: "0.1s"
+                },
+                {
+                  name: "Enterprise",
+                  price: "Custom",
+                  description: "Tailored solutions for large organizations",
+                  features: [
+                    "Unlimited Projects",
+                    "All Components",
+                    "Dedicated Support",
+                    "Full Documentation",
+                    "Custom Development",
+                    "SLA Agreement"
+                  ],
+                  highlighted: false,
+                  delay: "0.2s"
+                }
+              ].map((plan, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "rounded-xl p-8 animate-fade-in border",
+                    plan.highlighted 
+                      ? "border-blue-600 bg-gradient-to-b from-blue-50 to-white shadow-lg transform scale-105 z-10" 
+                      : "border-gray-200 bg-white"
+                  )}
+                  style={{ animationDelay: plan.delay }}
+                >
+                  <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
+                  <div className="flex items-end mb-4">
+                    <span className="text-3xl font-bold">{plan.price}</span>
+                    {plan.period && <span className="text-gray-500">{plan.period}</span>}
+                  </div>
+                  <p className="text-gray-600 mb-6">{plan.description}</p>
+                  <ul className="space-y-2 mb-8">
+                    {plan.features.map((feature, i) => (
+                      <li key={i} className="flex items-center">
+                        <svg className="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button 
+                    className={cn("w-full", 
+                      plan.highlighted 
+                        ? "bg-blue-600 hover:bg-blue-700" 
+                        : "bg-gray-900 hover:bg-gray-800"
+                    )}
+                    onClick={() => scrollToSection('cta')}
+                  >
+                    Choose Plan
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
-        <section className="py-24 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white relative overflow-hidden">
+        <section id="cta" className="py-24 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.2)_0%,transparent_40%)]"></div>
           </div>
@@ -232,13 +376,23 @@ const Index = () => {
             <div>
               <h4 className="text-white font-semibold mb-4">Links</h4>
               <ul className="space-y-2">
-                {['Home', 'Features', 'Testimonials', 'Pricing', 'Contact'].map((item) => (
-                  <li key={item}>
+                {[
+                  { id: 'hero', label: 'Home' },
+                  { id: 'features', label: 'Features' },
+                  { id: 'testimonials', label: 'Testimonials' },
+                  { id: 'pricing', label: 'Pricing' },
+                  { id: 'contact', label: 'Contact' }
+                ].map((item) => (
+                  <li key={item.id}>
                     <a 
-                      href={`#${item.toLowerCase()}`} 
+                      href={`#${item.id}`} 
                       className="text-gray-400 hover:text-white transition-colors"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        scrollToSection(item.id);
+                      }}
                     >
-                      {item}
+                      {item.label}
                     </a>
                   </li>
                 ))}
