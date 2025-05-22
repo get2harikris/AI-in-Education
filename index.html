@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -50,7 +51,7 @@
             @apply bg-cyan-500 text-white;
         }
         .section-title {
-            @apply text-3xl font-bold tracking-tight text-cyan-400 sm:text-4xl mb-4 uppercase tracking-wide; /* Corrected letter-spacing */
+            @apply text-3xl font-bold tracking-tight text-cyan-400 sm:text-4xl mb-4 uppercase;
         }
         .section-subtitle {
             @apply mt-2 text-lg leading-8 text-gray-400 mb-8;
@@ -115,17 +116,8 @@
         }
 
         /* Chart.js Global Defaults for Dark Theme */
-        Chart.defaults.color = '#A0AEC0'; 
-        Chart.defaults.borderColor = '#4A5568'; 
-        Chart.defaults.plugins.legend.labels.color = '#A0AEC0';
-        Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(26, 24, 51, 0.95)'; 
-        Chart.defaults.plugins.tooltip.titleColor = '#00FFFF'; 
-        Chart.defaults.plugins.tooltip.bodyColor = '#E0E0E0';
-        Chart.defaults.plugins.tooltip.borderColor = '#00FFFF';
-        Chart.defaults.plugins.tooltip.borderWidth = 1;
-        Chart.defaults.plugins.tooltip.padding = 12;
-        Chart.defaults.plugins.tooltip.cornerRadius = 8;
-
+        /* Removed the invalid lines below that were causing the error */
+        /* These should be set in JavaScript, not in CSS */
     </style>
 </head>
 <body class="antialiased">
@@ -465,6 +457,18 @@
             }
         };
 
+        // Set Chart.js global defaults
+        Chart.defaults.color = '#A0AEC0'; 
+        Chart.defaults.borderColor = '#4A5568'; 
+        Chart.defaults.plugins.legend.labels.color = '#A0AEC0';
+        Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(26, 24, 51, 0.95)'; 
+        Chart.defaults.plugins.tooltip.titleColor = '#00FFFF'; 
+        Chart.defaults.plugins.tooltip.bodyColor = '#E0E0E0';
+        Chart.defaults.plugins.tooltip.borderColor = '#00FFFF';
+        Chart.defaults.plugins.tooltip.borderWidth = 1;
+        Chart.defaults.plugins.tooltip.padding = 12;
+        Chart.defaults.plugins.tooltip.cornerRadius = 8;
+
         const studentImpactCtx = document.getElementById('studentImpactChart').getContext('2d');
         new Chart(studentImpactCtx, {
             type: 'doughnut',
@@ -616,7 +620,6 @@
                 }
             });
         });
-
     </script>
 </body>
 </html>
